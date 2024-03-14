@@ -21,22 +21,12 @@ class Fighter():
 
     def update_flip(self, target):
         """Update the flip attribute based on the relative position of the target."""
-        # print('flipping position', self.rect.centerx, target.rect.centerx)
-        SPEED = 10
-        key = pygame.key.get_pressed()
-        dx = 0
-
-        if self.attacking == False: 
-            if key[pygame.K_LEFT]:
-                dx = -SPEED
-            if key[pygame.K_RIGHT]:
-                dx = SPEED        
+        print('relative position', self.rect.centerx, target.rect.centerx)
         if target.rect.centerx < self.rect.centerx:
             self.flip = True
         else:
             self.flip = False
 
-        print('flipping', self.flip)
         
 
     def move(self, screen_width, screen_height, surface, target):
@@ -45,7 +35,13 @@ class Fighter():
         GRAVITY = 2
         dx = 0
         dy = 0
-        # ensure player face each other 
+        key = pygame.key.get_pressed()
+
+        if self.attacking == False: 
+            if key[pygame.K_LEFT]:
+                dx = -SPEED
+            if key[pygame.K_RIGHT]:
+                dx = SPEED                
         
         self.update_flip(target)
         # update player position
