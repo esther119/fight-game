@@ -89,13 +89,13 @@ class Fighter():
         # update player position
         self.rect.x += dx
         self.rect.y += dy
+    
+
 
     def draw(self, surface):
-        # flip left or right]
-        print('flip', self.flip)
-        self.image = pygame.transform.flip(self.image, self.flip, False) # surface, flip_x, flip_y
-        pygame.draw.rect(surface, (255,0,0), self.rect)
-        surface.blit(self.image, (self.rect.x -self.offset[0], self.rect.y - -self.offset[1])) #source, dest
+        img = pygame.transform.flip(self.image, self.flip, False) # surface, flip_x, flip_y
+        print('img after', img)
+        surface.blit(img, (self.rect.x-self.offset[0], self.rect.y- self.offset[1])) #source, dest
     
     def attack(self, surface, target):
         self.attacking = True
