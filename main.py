@@ -48,16 +48,23 @@ def health_bars(surface, fighter1, fighter2):
     pygame.draw.rect(surface, YELLOW, (fighter2.rect.x, fighter2.rect.y - 20, fighter2.health, 10))
 
 #create fighers
-fighter1 = Fighter(200, 400, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_COL)
-fighter2 = Fighter(600, 400, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_COL)
+fighter1 = Fighter(200, 400, WARRIOR_DATA, False, warrior_sheet, WARRIOR_ANIMATION_COL)
+fighter2 = Fighter(600, 400, WIZARD_DATA, True, wizard_sheet, WIZARD_ANIMATION_COL)
 
 # game loop
 run = True
 while run:
-    clock.tick(10)
+    clock.tick(60)
     draw_bg()
+
+
+
     fighter1.draw(screen)
     fighter2.draw(screen)
+
+    fighter1.update_animation()
+    fighter2.update_animation()    
+
     health_bars(screen, fighter1, fighter2)
 
     fighter1.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter2)
