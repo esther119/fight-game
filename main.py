@@ -18,9 +18,13 @@ YELLOW = (255, 255, 0)
 
 # define fighter variable 
 WARRIOR_SIZE = 162
-WARRIOR_DATA = [WARRIOR_SIZE]
+WARRIOR_SCALE = 2
+WARRIOR_OFFSET = [130,-100]
+WARRIOR_DATA = [WARRIOR_SIZE, WARRIOR_SCALE, WARRIOR_OFFSET]
 WIZARD_SIZE = 250
-WIZARD_DATA = [WIZARD_SIZE]
+WARRIOR_SCALE = 1.5
+WARRIOR_OFFSET = [160, -160]
+WIZARD_DATA = [WIZARD_SIZE, WARRIOR_SCALE, WARRIOR_OFFSET]
 
 
 # load background image 
@@ -28,9 +32,9 @@ bg_image = pygame.image.load("assets/images/background/background.jpg").convert_
 warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/warrior.png").convert_alpha()
 wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").convert_alpha()
 
-# define number of steps in each animation
-WARRIOR_ANIMATION_STEPS = [10,8,1,7,7,3,7]
-WIZARD_ANIMATION_STEPS = [8,8,1,8,8,3,7]
+# define number of columns in each animation
+WARRIOR_ANIMATION_COL = [10,8,1,7,7,3,7]
+WIZARD_ANIMATION_COL = [8,8,1,8,8,3,7]
 # function to draw background image
 def draw_bg():
     scaled_bg = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT)) 
@@ -44,8 +48,8 @@ def health_bars(surface, fighter1, fighter2):
     pygame.draw.rect(surface, YELLOW, (fighter2.rect.x, fighter2.rect.y - 20, fighter2.health, 10))
 
 #create fighers
-fighter1 = Fighter(200, 400, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
-fighter2 = Fighter(600, 400, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
+fighter1 = Fighter(200, 400, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_COL)
+fighter2 = Fighter(600, 400, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_COL)
 
 # game loop
 run = True

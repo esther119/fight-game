@@ -2,8 +2,10 @@ import pygame
 import time
 
 class Fighter(): 
-    def __init__(self, x, y, data, sheet, animation_steps):
-        self.size = data[0]
+    def __init__(self, x, y, fighter_data, sheet, columns):
+        self.size = fighter_data[0]
+        self.scale = fighter_data[1]
+        self.offset = fighter_data[2]
         self.rect = pygame.Rect((x,y,50,100))
         self.velocity_y = 0
         self.jump = False
@@ -11,10 +13,23 @@ class Fighter():
         self.attacking = False 
         self.health = 100
         self.flip = False
+        self.animation_list = self.load_images(sheet, columns)
+        self.action = 0 #0: idle 1: run 2: jump 3: attack1 4: attack2 5: hit 6: death
+        self.frame_index = 0
+        self.image = self.animation_list[self.action][self.frame_index]
     
-    # def load_images(self, sheet, steps):
-    #     for _ in range(animation):
-    #         temp_img = sheet.subsurface(0, 0, self.size, self.size)
+    def load_images(self, sheet, columns):
+        animation_list = []
+        for y, col in enumerate(columns):
+            row_images = []
+            for x in range(0, col):
+                # print('x', x, 'y', y, 'col', col )
+                img = sheet.subsurface(x*self.size, y*self.size, self.size, self.size) #Surface(162x162x32)  #32 is the color depth
+                # scale the image
+                img = pygame.transform.scale(img, (self.size * self.scale, self.size * self.scale))
+                row_images.append(img)
+            animation_list.append(row_images)
+        return animation_list
 
 
 
@@ -76,7 +91,11 @@ class Fighter():
         self.rect.y += dy
 
     def draw(self, surface):
+        # flip left or right]
+        print('flip', self.flip)
+        self.image = pygame.transform.flip(self.image, self.flip, False) # surface, flip_x, flip_y
         pygame.draw.rect(surface, (255,0,0), self.rect)
+        surface.blit(self.image, (self.rect.x -self.offset[0], self.rect.y - -self.offset[1])) #source, dest
     
     def attack(self, surface, target):
         self.attacking = True
