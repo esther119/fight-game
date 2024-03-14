@@ -54,7 +54,7 @@ fighter2 = Fighter(600, 400, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_COL)
 # game loop
 run = True
 while run:
-    clock.tick(FPS)
+    clock.tick(60)
     draw_bg()
     fighter1.draw(screen)
     fighter2.draw(screen)
