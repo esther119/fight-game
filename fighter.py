@@ -26,11 +26,13 @@ class Fighter():
             self.flip = True
         else:
             self.flip = False
+        print('flip', self.flip)
 
         
 
     def move(self, screen_width, screen_height, surface, target):
         # print('rct left and right', self.rect.left, self.rect.right)
+        print('move flip', self.flip)
         SPEED = 10
         GRAVITY = 2
         dx = 0
@@ -50,7 +52,8 @@ class Fighter():
 
     def draw(self, surface):
         # flip left or right]
-        print('flip', self.flip)
+        # print('self', self)
+        print('draw flip', self, self.flip)
         # self.image = pygame.transform.flip(self.image, self.flip, False) # surface, flip_x, flip_y
         pygame.draw.rect(surface, (255,0,0), self.rect)
         # surface.blit(self.image, (self.rect.x -self.offset[0], self.rect.y - -self.offset[1])) #source, dest
