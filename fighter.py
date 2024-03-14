@@ -22,12 +22,22 @@ class Fighter():
     def update_flip(self, target):
         """Update the flip attribute based on the relative position of the target."""
         # print('flipping position', self.rect.centerx, target.rect.centerx)
+        SPEED = 10
+        key = pygame.key.get_pressed()
+        dx = 0
+
+        if self.attacking == False: 
+            if key[pygame.K_LEFT]:
+                dx = -SPEED
+            if key[pygame.K_RIGHT]:
+                dx = SPEED        
         if target.rect.centerx < self.rect.centerx:
             self.flip = True
         else:
             self.flip = False
 
         print('flipping', self.flip)
+        
 
     def move(self, screen_width, screen_height, surface, target):
         # print('rct left and right', self.rect.left, self.rect.right)
