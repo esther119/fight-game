@@ -2,7 +2,8 @@ import pygame
 import time
 
 class Fighter(): 
-    def __init__(self, x, y, fighter_data, flip, sheet, columns):
+    def __init__(self, player, x, y, fighter_data, flip, sheet, columns):
+        self.player = player
         self.size = fighter_data[0]
         self.scale = fighter_data[1]
         self.offset = fighter_data[2]
@@ -35,42 +36,70 @@ class Fighter():
             animation_list.append(row_images)
         return animation_list
 
+    def player_movement(self, dx, dy, surface, target):
+        key = pygame.key.get_pressed()
+        SPEED = 10
+        GRAVITY = 2
+
+        if self.player == 2: 
+            if self.attacking == False: 
+                if key[pygame.K_LEFT]:
+                    dx = -SPEED
+                    self.running = True
+                if key[pygame.K_RIGHT]:
+                    dx = SPEED
+                    self.running = True
+                #jump
+                if key[pygame.K_SPACE] and not self.jump:
+                    self.velocity_y = -15
+                    self.jump = True
+                elif not key[pygame.K_SPACE]:
+                    self.jump = False
+                self.velocity_y += GRAVITY
+                dy+= self.velocity_y
+                # attack
+                if key[pygame.K_n] or key[pygame.K_m]:
+                    print('attack')
+                    self.attack(surface, target)
+                    if key[pygame.K_n]:
+                        self.attack_type = 1
+                    elif key[pygame.K_m]:
+                        self.attack_type = 2  
+        else:         
+            if self.attacking == False: 
+                if key[pygame.K_a]:
+                    dx = -SPEED
+                    self.running = True
+                if key[pygame.K_d]:
+                    dx = SPEED
+                    self.running = True
+                #jump
+                if key[pygame.K_w] and not self.jump:
+                    self.velocity_y = -15
+                    self.jump = True
+                elif not key[pygame.K_w]:
+                    self.jump = False
+                self.velocity_y += GRAVITY
+                dy+= self.velocity_y
+                # attack
+                if key[pygame.K_c] or key[pygame.K_v]:
+                    print('attack')
+                    self.attack(surface, target)
+                    if key[pygame.K_c]:
+                        self.attack_type = 1
+                    elif key[pygame.K_v]:
+                        self.attack_type = 2
+        return dx, dy
 
 
     def move(self, screen_width, screen_height, surface, target):
         # print('rct left and right', self.rect.left, self.rect.right)
-        SPEED = 10
-        GRAVITY = 2
+
         dx = 0
         dy = 0
-        key = pygame.key.get_pressed()
+        
         self.running = False
-
-        if self.attacking == False: 
-            if key[pygame.K_LEFT]:
-                dx = -SPEED
-                self.running = True
-            if key[pygame.K_RIGHT]:
-                dx = SPEED
-                self.running = True
-            #jump
-            if key[pygame.K_SPACE] and not self.jump:
-                self.velocity_y = -15
-                self.jump = True
-            elif not key[pygame.K_SPACE]:
-                self.jump = False
-            self.velocity_y += GRAVITY
-            dy+= self.velocity_y
-            # attack
-            if key[pygame.K_z] or key[pygame.K_m]:
-                print('attack')
-                self.attack(surface, target)
-                if key[pygame.K_z]:
-                    self.attack_type = 1
-                elif key[pygame.K_m]:
-                    self.attack_type = 2
-
-
+        dx, dy = self.player_movement(dx, dy, surface, target)
             
 
         # check for boundaries
