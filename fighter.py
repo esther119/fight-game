@@ -142,6 +142,8 @@ class Fighter():
                 self.update_action(4)
         elif self.hit: 
             self.update_action(5)
+        elif self.health <= 0:
+            self.update_action(6)
         else:
             self.update_action(0)
         
@@ -154,9 +156,16 @@ class Fighter():
             self.frame_index += 1
         #if the animation has run out then reset back to the start
         if self.frame_index >= len(self.animation_list[self.action]):
-            self.frame_index = 0
-            if self.action == 3 or self.action == 4:
-                self.attacking = False
-                self.attack_cooldown = 20
-            elif self.action == 5:
-                self.hit = False
+            if self.health == 0:  #TO DO: fix the death animation
+                self.frame_index = len(self.animation_list[self.action]) - 1
+                print('death')
+            else: 
+                self.frame_index = 0
+                if self.action == 3 or self.action == 4:
+                    self.attacking = False
+                    self.attack_cooldown = 20
+                elif self.action == 5:
+                    self.hit = False
+                    # TO DO: if the player is in the middle of attack 
+
+             
