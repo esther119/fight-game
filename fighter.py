@@ -16,6 +16,7 @@ class Fighter():
         self.attack_cooldown = 0
         self.hit = False
         self.health = 100
+        self.alive = True 
         self.flip = flip
         self.animation_list = self.load_images(sheet, columns)
         self.action = 0 #0: idle 1: run 2: jump 3: attack1 4: attack2 5: hit 6: death
@@ -59,7 +60,6 @@ class Fighter():
                 dy+= self.velocity_y
                 # attack
                 if key[pygame.K_n] or key[pygame.K_m]:
-                    print('attack')
                     self.attack(surface, target)
                     if key[pygame.K_n]:
                         self.attack_type = 1
@@ -83,7 +83,6 @@ class Fighter():
                 dy+= self.velocity_y
                 # attack
                 if key[pygame.K_c] or key[pygame.K_v]:
-                    print('attack')
                     self.attack(surface, target)
                     if key[pygame.K_c]:
                         self.attack_type = 1
@@ -114,7 +113,6 @@ class Fighter():
             dy = screen_height - 110 - self.rect.bottom
         # check not over the top
         if self.rect.top + dy < 0:
-            print('top boundary', -self.rect.top)
             dy = 0
 
         # ensure player face each other 
@@ -141,7 +139,7 @@ class Fighter():
             attacking_rect = pygame.Rect((self.rect.centerx - (2* self.rect.width * self.flip), self.rect.y, 2*self.rect.width, self.rect.height))
             
             if attacking_rect.colliderect(target.rect):
-                print('hit')
+                # print('hit')
                 target.health -= 10
                 target.hit = True
                 pygame.draw.rect(surface, (0,255,0), attacking_rect)
@@ -162,16 +160,16 @@ class Fighter():
         elif self.jump:
             self.update_action(2)
         elif self.attacking:
-            print('self.attacking')
             if self.attack_type == 1:
-                print('attack1 update action')
+                # print('attack1 update action')
                 self.update_action(3)
             elif self.attack_type == 2:
-                print('attack2 update action')
+                # print('attack2 update action')
                 self.update_action(4)
         elif self.hit: 
             self.update_action(5)
         elif self.health <= 0:
+            self.alive = False
             self.update_action(6)
         else:
             self.update_action(0)
@@ -185,9 +183,11 @@ class Fighter():
             self.frame_index += 1
         #if the animation has run out then reset back to the start
         if self.frame_index >= len(self.animation_list[self.action]):
-            if self.health == 0:  #TO DO: fix the death animation
+            # print('heath', self.health)
+            # if self.health <= 0:
+            if not self.alive:  #TO DO: fix the death animation
                 self.frame_index = len(self.animation_list[self.action]) - 1
-                print('death')
+                # print('death happens')
             else: 
                 self.frame_index = 0
                 if self.action == 3 or self.action == 4:
